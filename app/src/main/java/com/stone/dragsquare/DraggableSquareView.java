@@ -289,36 +289,48 @@ public class DraggableSquareView extends ViewGroup {
             case DraggableItemView.STATUS_RIGHT_BOTTOM:
                 if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
                     fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-                } else if (centerX < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-                } else if (centerY < everyWidth * 2) {
+                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
                     fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                } else if (centerX < everyWidth1 * 3) {
+                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
+                } else if (centerX < everyWidth1 * 2) {
+                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
+                } else if (centerY < everyWidth1) {
+                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
                 }
                 break;
-            case DraggableItemView.STATUS_MIDDLE_BOTTOM_1:
             case DraggableItemView.STATUS_MIDDLE_BOTTOM_2:
-                if (centerY < everyWidth * 2) {
-                    if (centerX < everyWidth * 2) {
-                        fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-                    } else {
-                        if (centerY < everyWidth) {
-                            fromStatus = DraggableItemView.STATUS_RIGHT_TOP;
-                        } else {
-                            fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                        }
-                    }
-                } else {
-                    if (centerX < everyWidth1) {
-                        fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
-                    } else if (centerX > everyWidth1 && centerX < everyWidth1 * 2) {
-                        fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-                    } else if (centerX > everyWidth1 * 2 && centerX < everyWidth1 * 3) {
-                        fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
-                    } else {
-                        fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
-                    }
+                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
+                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                } else if (centerX < everyWidth1 * 2) {
+                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
+                } else if (centerX < everyWidth1) {
+                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
+                } else if (centerX > everyWidth1 * 3) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
                 }
 
+                break;
+            case DraggableItemView.STATUS_MIDDLE_BOTTOM_1:
+                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
+                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                } else if (centerX < everyWidth1) {
+                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
+                } else if (centerX > everyWidth1 * 2) {
+                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
+                } else if (centerX > everyWidth1 * 3) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
+                }
                 break;
 //            case DraggableItemView.STATUS_MIDDLE_BOTTOM_2:
 //                if (centerX < everyWidth) {
@@ -330,12 +342,18 @@ public class DraggableSquareView extends ViewGroup {
 //                }
 //                break;
             case DraggableItemView.STATUS_LEFT_BOTTOM:
-                if (centerX > everyWidth1 && centerX < everyWidth1 * 2) {
-                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-                } else if (centerX > everyWidth1 * 2 && centerX < everyWidth1 * 3) {
-                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
-                } else if (centerY < everyWidth * 2) {
+                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
                     fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                } else if (centerX > everyWidth1) {
+                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
+                } else if (centerX > everyWidth1 * 2) {
+                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
+                } else if (centerX > everyWidth1 * 3) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
                 }
                 break;
             default:
