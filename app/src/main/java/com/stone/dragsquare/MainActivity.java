@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.soundcloud.android.crop.Crop;
@@ -28,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dragSquare = findViewById(R.id.drag_square);
+        findViewById(R.id.name_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAllImagePath();
+            }
+        });
     }
 
 
@@ -46,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
         this.imageStatus = imageStatus;
         this.isModify = isModify;
         Crop.pickImage(this);
+    }
+
+    public void getAllImagePath() {
+        if (dragSquare == null) {
+            return;
+        }
+        dragSquare.getAllImages();
     }
 
     @Override

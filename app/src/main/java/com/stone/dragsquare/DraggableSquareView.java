@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,6 +158,19 @@ public class DraggableSquareView extends ViewGroup {
                 break;
             }
         }
+    }
+
+    public List<String> getAllImages() {
+        List<String> pathList = new ArrayList<>();
+        for (int i = 0; i < allStatus.length; i++) {
+            DraggableItemView itemView = getItemViewByStatus(i);
+            if (itemView.isDraggable()) {
+                String path = itemView.getImagePath();
+                android.util.Log.e("DraggableSquareView", "path=" + path);
+                pathList.add(itemView.getImagePath());
+            }
+        }
+        return pathList;
     }
 
     /**

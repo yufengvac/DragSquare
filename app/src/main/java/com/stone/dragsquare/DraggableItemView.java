@@ -334,6 +334,10 @@ public class DraggableItemView extends FrameLayout {
         Glide.with(imageView).load(imagePath).into(imageView);
     }
 
+    public String getImagePath(){
+        return this.imagePath;
+    }
+
     // 以下两个get、set方法是为自定义的属性动画CustScale服务，不能删
     public void setCustScale(float scale) {
         imageView.setScaleX(scale);
