@@ -167,7 +167,7 @@ public class DraggableItemView extends FrameLayout {
             scaleRate = getScaleRate2();
             scaleSize(SCALE_LEVEL_2);
         } else if (toStatus == STATUS_LEFT_TOP) {
-            scaleSize(SCALE_LEVEL_1);
+            scaleSize(SCALE_LEVEL_3);
         }
     }
 
