@@ -31,6 +31,16 @@ public class DraggableSquareView extends ViewGroup {
             DraggableItemView.STATUS_RIGHT_MIDDLE, DraggableItemView.STATUS_RIGHT_BOTTOM,
             DraggableItemView.STATUS_MIDDLE_BOTTOM_1, DraggableItemView.STATUS_MIDDLE_BOTTOM_2, DraggableItemView.STATUS_LEFT_BOTTOM};
 
+    private static final String[] DEBUG_PATH = new String[]{
+            "file:///data/user/0/com.stone.dragsquare/cache/cropped_1564992903223.jpg",
+            "file:///data/user/0/com.stone.dragsquare/cache/cropped_1564992948527.jpg",
+            "file:///data/user/0/com.stone.dragsquare/cache/cropped_1564992924032.jpg",
+            "file:///data/user/0/com.stone.dragsquare/cache/cropped_1564992895895.jpg",
+            "file:///data/user/0/com.stone.dragsquare/cache/cropped_1564992937079.jpg",
+            "file:///data/user/0/com.stone.dragsquare/cache/cropped_1564992913254.jpg",
+            "file:///data/user/0/com.stone.dragsquare/cache/cropped_1564992960597.jpg",
+    };
+
     /**
      * 判定为滑动的阈值，单位是像素
      */
@@ -129,6 +139,7 @@ public class DraggableSquareView extends ViewGroup {
             DraggableItemView itemView = new DraggableItemView(getContext());
             itemView.setStatus(allStatus[i]);
             itemView.setParentView(this);
+//            itemView.fillImageView(DEBUG_PATH[i]);
             //  原始位置点，由此初始化，一定与子View的status绑定
             originViewPositionList.add(new Point());
             addView(itemView);
@@ -264,10 +275,12 @@ public class DraggableSquareView extends ViewGroup {
                         fromChangeIndex = DraggableItemView.STATUS_RIGHT_BOTTOM;
                     }
                 } else if (centerY > everyWidth * 2) {
-                    if (centerX < everyWidth) {
+                    if (centerX < everyWidth1) {
                         fromChangeIndex = DraggableItemView.STATUS_LEFT_BOTTOM;
-                    } else if (centerX < everyWidth * 2) {
-//                        fromChangeIndex = DraggableItemView.STATUS_MIDDLE_BOTTOM;
+                    } else if (centerX < everyWidth1 * 2) {
+                        fromChangeIndex = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
+                    } else if (centerX < everyWidth1 * 3) {
+                        fromChangeIndex = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
                     } else {
                         fromChangeIndex = DraggableItemView.STATUS_RIGHT_BOTTOM;
                     }
@@ -384,6 +397,7 @@ public class DraggableSquareView extends ViewGroup {
                 switchPosition(i, i + 1);
             }
             draggingView.setStatus(fromStatus);
+            draggingView.resetScaleSize(fromStatus);
         }
     }
 

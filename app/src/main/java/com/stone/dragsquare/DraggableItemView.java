@@ -159,7 +159,7 @@ public class DraggableItemView extends FrameLayout {
         this.smallerRate = scaleRate * 0.9f;
     }
 
-    public void resetScaleSize(int toStatus){
+    public void resetScaleSize(int toStatus) {
         if (toStatus == STATUS_RIGHT_TOP || toStatus == STATUS_RIGHT_MIDDLE) {
             scaleRate = getScaleRate1();
             scaleSize(SCALE_LEVEL_2);
@@ -312,7 +312,11 @@ public class DraggableItemView extends FrameLayout {
     public void onDragRelease() {
         if (status == DraggableItemView.STATUS_LEFT_TOP) {
             scaleSize(DraggableItemView.SCALE_LEVEL_1);
+        } else if (status == DraggableItemView.STATUS_RIGHT_MIDDLE || status == DraggableItemView.STATUS_RIGHT_TOP) {
+            scaleRate = getScaleRate1();
+            scaleSize(DraggableItemView.SCALE_LEVEL_2);
         } else {
+            scaleRate = getScaleRate2();
             scaleSize(DraggableItemView.SCALE_LEVEL_2);
         }
 
@@ -334,7 +338,7 @@ public class DraggableItemView extends FrameLayout {
         Glide.with(imageView).load(imagePath).into(imageView);
     }
 
-    public String getImagePath(){
+    public String getImagePath() {
         return this.imagePath;
     }
 
