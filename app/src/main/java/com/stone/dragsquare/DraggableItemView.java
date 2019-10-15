@@ -24,10 +24,14 @@ public class DraggableItemView extends FrameLayout {
     public static final int STATUS_LEFT_TOP = 0;
     public static final int STATUS_RIGHT_TOP = 1;
     public static final int STATUS_RIGHT_MIDDLE = 2;
-    public static final int STATUS_RIGHT_BOTTOM = 6;
-    public static final int STATUS_MIDDLE_BOTTOM_1 = 4;
-    public static final int STATUS_MIDDLE_BOTTOM_2 = 5;
-    public static final int STATUS_LEFT_BOTTOM = 3;
+
+    public static final int STATUS_BOTTOM_1 = 3;
+    public static final int STATUS_BOTTOM_2 = 4;
+    public static final int STATUS_BOTTOM_3 = 5;
+
+    public static final int STATUS_NEW_BOTTOM_1 = 6;
+    public static final int STATUS_NEW_BOTTOM_2 = 7;
+    public static final int STATUS_NEW_BOTTOM_3 = 8;
 
     public static final int SCALE_LEVEL_1 = 1; // 最大状态，缩放比例是100%
     public static final int SCALE_LEVEL_2 = 2; // 中间状态，缩放比例scaleRate
@@ -163,10 +167,12 @@ public class DraggableItemView extends FrameLayout {
         if (toStatus == STATUS_RIGHT_TOP || toStatus == STATUS_RIGHT_MIDDLE) {
             scaleRate = getScaleRate1();
             scaleSize(SCALE_LEVEL_2);
-        } else if (toStatus == STATUS_LEFT_BOTTOM || toStatus == STATUS_MIDDLE_BOTTOM_1 || toStatus == STATUS_MIDDLE_BOTTOM_2 || toStatus == STATUS_RIGHT_BOTTOM) {
-            scaleRate = getScaleRate2();
-            scaleSize(SCALE_LEVEL_2);
-        } else if (toStatus == STATUS_LEFT_TOP) {
+        }
+//        else if (toStatus == STATUS_LEFT_BOTTOM || toStatus == STATUS_MIDDLE_BOTTOM_1 || toStatus == STATUS_MIDDLE_BOTTOM_2 || toStatus == STATUS_RIGHT_BOTTOM) {
+//            scaleRate = getScaleRate2();
+//            scaleSize(SCALE_LEVEL_2);
+//        }
+        else if (toStatus == STATUS_LEFT_TOP) {
             scaleSize(SCALE_LEVEL_3);
         }
     }
@@ -194,10 +200,12 @@ public class DraggableItemView extends FrameLayout {
         if (toStatus == STATUS_RIGHT_TOP || toStatus == STATUS_RIGHT_MIDDLE) {
             scaleRate = getScaleRate1();
             scaleSize(SCALE_LEVEL_2);
-        } else if (toStatus == STATUS_LEFT_BOTTOM || toStatus == STATUS_MIDDLE_BOTTOM_1 || toStatus == STATUS_MIDDLE_BOTTOM_2 || toStatus == STATUS_RIGHT_BOTTOM) {
-            scaleRate = getScaleRate2();
-            scaleSize(SCALE_LEVEL_2);
-        } else if (toStatus == STATUS_LEFT_TOP) {
+        }
+//        else if (toStatus == STATUS_LEFT_BOTTOM || toStatus == STATUS_MIDDLE_BOTTOM_1 || toStatus == STATUS_MIDDLE_BOTTOM_2 || toStatus == STATUS_RIGHT_BOTTOM) {
+//            scaleRate = getScaleRate2();
+//            scaleSize(SCALE_LEVEL_2);
+//        }
+        else if (toStatus == STATUS_LEFT_TOP) {
             scaleSize(SCALE_LEVEL_1);
         }
 

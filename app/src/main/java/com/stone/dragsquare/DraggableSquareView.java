@@ -28,8 +28,9 @@ public class DraggableSquareView extends ViewGroup {
      */
     private static final int INTERCEPT_TIME_SLOP = 200;
     private final int[] allStatus = {DraggableItemView.STATUS_LEFT_TOP, DraggableItemView.STATUS_RIGHT_TOP,
-            DraggableItemView.STATUS_RIGHT_MIDDLE, DraggableItemView.STATUS_RIGHT_BOTTOM,
-            DraggableItemView.STATUS_MIDDLE_BOTTOM_1, DraggableItemView.STATUS_MIDDLE_BOTTOM_2, DraggableItemView.STATUS_LEFT_BOTTOM};
+            DraggableItemView.STATUS_RIGHT_MIDDLE, DraggableItemView.STATUS_BOTTOM_1,
+            DraggableItemView.STATUS_BOTTOM_2, DraggableItemView.STATUS_BOTTOM_3,
+            DraggableItemView.STATUS_NEW_BOTTOM_1, DraggableItemView.STATUS_NEW_BOTTOM_2, DraggableItemView.STATUS_NEW_BOTTOM_3};
 
     private static final String[] DEBUG_PATH = new String[]{
             "file:///data/user/0/com.stone.dragsquare/cache/cropped_1564992903223.jpg",
@@ -260,129 +261,120 @@ public class DraggableSquareView extends ViewGroup {
         int fromStatus = -1, toStatus = draggingView.getStatus();
 
         switch (draggingView.getStatus()) {
-            case DraggableItemView.STATUS_LEFT_TOP:
-                // 拖动的是左上角的大图
-                // 依次将小图向上顶
-                int fromChangeIndex = 0;
-                if (centerX > everyWidth * 2) {
-                    // 大图往右越过了位置，一定会跟右侧的三个View交换位置才行
-                    if (centerY < everyWidth) {
-                        // 跟右上角的View交换位置
-                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_TOP;
-                    } else if (centerY < everyWidth * 2) {
-                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                    } else {
-                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_BOTTOM;
-                    }
-                } else if (centerY > everyWidth * 2) {
-                    if (centerX < everyWidth1) {
-                        fromChangeIndex = DraggableItemView.STATUS_LEFT_BOTTOM;
-                    } else if (centerX < everyWidth1 * 2) {
-                        fromChangeIndex = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-                    } else if (centerX < everyWidth1 * 3) {
-                        fromChangeIndex = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
-                    } else {
-                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_BOTTOM;
-                    }
-                }
-
-                DraggableItemView toItemView = getItemViewByStatus(fromChangeIndex);
-                if (!toItemView.isDraggable()) {
-                    return;
-                }
-
-                for (int i = 1; i <= fromChangeIndex; i++) {
-                    switchPosition(i, i - 1);
-                }
-                draggingView.setStatus(fromChangeIndex);
-                return;
-            case DraggableItemView.STATUS_RIGHT_TOP:
-                if (centerX < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-                } else if (centerY > everyWidth) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                }
-                break;
-
-            case DraggableItemView.STATUS_RIGHT_MIDDLE:
-                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-                } else if (centerY < everyWidth) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_TOP;
-                } else if (centerY > everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
-                }
-                break;
-            case DraggableItemView.STATUS_RIGHT_BOTTOM:
-                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                } else if (centerX < everyWidth1 * 3) {
-                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
-                } else if (centerX < everyWidth1 * 2) {
-                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-                } else if (centerY < everyWidth1) {
-                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
-                }
-                break;
-            case DraggableItemView.STATUS_MIDDLE_BOTTOM_2:
-                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                } else if (centerX < everyWidth1 * 2) {
-                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-                } else if (centerX < everyWidth1) {
-                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
-                } else if (centerX > everyWidth1 * 3) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
-                }
-
-                break;
-            case DraggableItemView.STATUS_MIDDLE_BOTTOM_1:
-                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                } else if (centerX < everyWidth1) {
-                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
-                } else if (centerX > everyWidth1 * 2) {
-                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
-                } else if (centerX > everyWidth1 * 3) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
-                }
-                break;
-//            case DraggableItemView.STATUS_MIDDLE_BOTTOM_2:
-//                if (centerX < everyWidth) {
-//                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
-//                } else if (centerX > everyWidth * 2) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
-//                } else if (centerY < everyWidth * 2) {
+//            case DraggableItemView.STATUS_LEFT_TOP:
+//                // 拖动的是左上角的大图
+//                // 依次将小图向上顶
+//                int fromChangeIndex = 0;
+//                if (centerX > everyWidth * 2) {
+//                    // 大图往右越过了位置，一定会跟右侧的三个View交换位置才行
+//                    if (centerY < everyWidth) {
+//                        // 跟右上角的View交换位置
+//                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_TOP;
+//                    } else if (centerY < everyWidth * 2) {
+//                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                    } else {
+//                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_BOTTOM;
+//                    }
+//                } else if (centerY > everyWidth * 2) {
+//                    if (centerX < everyWidth1) {
+//                        fromChangeIndex = DraggableItemView.STATUS_LEFT_BOTTOM;
+//                    } else if (centerX < everyWidth1 * 2) {
+//                        fromChangeIndex = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
+//                    } else if (centerX < everyWidth1 * 3) {
+//                        fromChangeIndex = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
+//                    } else {
+//                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_BOTTOM;
+//                    }
+//                }
+//
+//                DraggableItemView toItemView = getItemViewByStatus(fromChangeIndex);
+//                if (!toItemView.isDraggable()) {
+//                    return;
+//                }
+//
+//                for (int i = 1; i <= fromChangeIndex; i++) {
+//                    switchPosition(i, i - 1);
+//                }
+//                draggingView.setStatus(fromChangeIndex);
+//                return;
+//            case DraggableItemView.STATUS_RIGHT_TOP:
+//                if (centerX < everyWidth * 2) {
 //                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+//                } else if (centerY > everyWidth) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
 //                }
 //                break;
-            case DraggableItemView.STATUS_LEFT_BOTTOM:
-                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-                } else if (centerX > everyWidth1) {
-                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-                } else if (centerX > everyWidth1 * 2) {
-                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
-                } else if (centerX > everyWidth1 * 3) {
-                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
-                }
-                break;
+//
+//            case DraggableItemView.STATUS_RIGHT_MIDDLE:
+//                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+//                } else if (centerY < everyWidth) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_TOP;
+//                } else if (centerY > everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
+//                }
+//                break;
+//            case DraggableItemView.STATUS_RIGHT_BOTTOM:
+//                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                } else if (centerX < everyWidth1 * 3) {
+//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
+//                } else if (centerX < everyWidth1 * 2) {
+//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
+//                } else if (centerY < everyWidth1) {
+//                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
+//                }
+//                break;
+//            case DraggableItemView.STATUS_MIDDLE_BOTTOM_2:
+//                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                } else if (centerX < everyWidth1 * 2) {
+//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
+//                } else if (centerX < everyWidth1) {
+//                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
+//                } else if (centerX > everyWidth1 * 3) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
+//                }
+//
+//                break;
+//            case DraggableItemView.STATUS_MIDDLE_BOTTOM_1:
+//                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                } else if (centerX < everyWidth1) {
+//                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
+//                } else if (centerX > everyWidth1 * 2) {
+//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
+//                } else if (centerX > everyWidth1 * 3) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
+//                }
+//                break;
+//            case DraggableItemView.STATUS_LEFT_BOTTOM:
+//                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                } else if (centerX > everyWidth1) {
+//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
+//                } else if (centerX > everyWidth1 * 2) {
+//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
+//                } else if (centerX > everyWidth1 * 3) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
+//                }
+//                break;
             default:
                 break;
         }
@@ -439,7 +431,6 @@ public class DraggableSquareView extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int everyLength = (getMeasuredWidth() - 4 * spaceInterval) / 3;
-        int everyBottomLength = (deviceWidth - 5 * spaceInterval) / 4;
         int itemLeft = 0;
         int itemTop = 0;
         int itemRight = 0;
@@ -450,13 +441,9 @@ public class DraggableSquareView extends ViewGroup {
         // 边长的一半
         int halfSideLength = sideLength / 2;
 
-        int halfSideLength1 = (everyBottomLength * 2 + spaceInterval) / 2;
-
         int rightCenter = r - spaceInterval - everyLength / 2;
-        int rightCenter1 = r - spaceInterval - everyBottomLength / 2;
         int bottomCenter = b - spaceInterval - everyLength / 2;
-//        int bottomCenter1 = 3 * spaceInterval + 2 * everyLength + everyBottomLength / 2;
-        int bottomCenter1 = b - spaceInterval - everyBottomLength / 2;
+        int bottomCenter1 = b - 2 * spaceInterval - everyLength - everyLength / 2;
 
         float scaleRate = (float) everyLength / sideLength;
         int num = getChildCount();
@@ -478,85 +465,81 @@ public class DraggableSquareView extends ViewGroup {
                     int hCenter1 = spaceInterval + everyLength / 2;
                     itemTop = hCenter1 - halfSideLength;
                     itemBottom = hCenter1 + halfSideLength;
-//                    itemLeft = spaceInterval * 3 + everyLength * 2;
-//                    itemRight = r - spaceInterval;
-//                    itemTop = spaceInterval;
-//                    itemBottom = spaceInterval + everyLength;
                     scaleRate = (float) everyLength / sideLength;
                     itemView.setScaleRate(scaleRate);
                     scale1 = scaleRate;
                     break;
                 case DraggableItemView.STATUS_RIGHT_MIDDLE:
-//                    itemLeft = rightCenter - halfSideLength;
-//                    itemRight = rightCenter + halfSideLength;
-//                    int hCenter2 = t + getMeasuredHeight() / 2;
-//                    itemTop = hCenter2 - halfSideLength;
-//                    itemBottom = hCenter2 + halfSideLength;
 
                     itemLeft = rightCenter - halfSideLength;
                     itemRight = rightCenter + halfSideLength;
-//                    int hCenter2 = t + getMeasuredHeight() / 2;
                     int hCenter2 = spaceInterval * 2 + everyLength / 2 + everyLength;
                     itemTop = hCenter2 - halfSideLength;
                     itemBottom = hCenter2 + halfSideLength;
 
-//                    itemLeft = spaceInterval * 3 + everyLength * 2;
-//                    itemRight = r - spaceInterval;
-//                    itemTop = spaceInterval * 2 + everyLength;
-//                    itemBottom = itemTop + spaceInterval + everyLength;
-//                    size = everyLength;
                     scaleRate = (float) everyLength / sideLength;
                     itemView.setScaleRate(scaleRate);
                     break;
-                case DraggableItemView.STATUS_RIGHT_BOTTOM:
-                    itemLeft = rightCenter1 - halfSideLength;
-                    itemRight = rightCenter1 + halfSideLength;
-                    itemTop = bottomCenter1 - halfSideLength;
-                    itemBottom = bottomCenter1 + halfSideLength;
 
-//                    itemLeft = spaceInterval * 4 + everyBottomLength * 3;
-//                    itemRight = r - spaceInterval;
-//                    itemTop = spaceInterval * 3 + everyLength * 2;
-//                    itemBottom = itemTop + everyBottomLength;
-                    scaleRate = (float) everyBottomLength / sideLength;
-                    itemView.setScaleRate(scaleRate);
-                    break;
-                case DraggableItemView.STATUS_MIDDLE_BOTTOM_1:
-                    int vCenter1 = l + spaceInterval * 2 + everyBottomLength / 2 + everyBottomLength;
-                    itemLeft = vCenter1 - halfSideLength;
-                    itemRight = vCenter1 + halfSideLength;
-                    itemTop = bottomCenter1 - halfSideLength;
-                    itemBottom = bottomCenter1 + halfSideLength;
-//                    itemLeft = spaceInterval * 3 + everyBottomLength * 2;
-//                    itemRight = itemLeft + everyBottomLength;
-//                    itemTop = spaceInterval * 3 + everyLength * 2;
-//                    itemBottom = itemTop + everyBottomLength;
 
-                    scaleRate = (float) everyBottomLength / sideLength;
-                    itemView.setScaleRate(scaleRate);
-                    break;
-                case DraggableItemView.STATUS_MIDDLE_BOTTOM_2:
-                    int vCenter3 = l + spaceInterval * 3 + everyBottomLength / 2 + everyBottomLength * 2;
-                    itemLeft = vCenter3 - halfSideLength;
-                    itemRight = vCenter3 + halfSideLength;
-                    itemTop = bottomCenter1 - halfSideLength;
-                    itemBottom = bottomCenter1 + halfSideLength;
-
-                    scaleRate = (float) everyBottomLength / sideLength;
-                    itemView.setScaleRate(scaleRate);
-                    break;
-                case DraggableItemView.STATUS_LEFT_BOTTOM:
-                    int vCenter2 = l + spaceInterval + everyBottomLength / 2;
+                case DraggableItemView.STATUS_BOTTOM_1:
+                    int vCenter2 = l + spaceInterval + everyLength / 2;
                     itemLeft = vCenter2 - halfSideLength;
                     itemRight = vCenter2 + halfSideLength;
                     itemTop = bottomCenter1 - halfSideLength;
                     itemBottom = bottomCenter1 + halfSideLength;
-//                    itemLeft = spaceInterval;
-//                    itemRight = spaceInterval + everyBottomLength;
-//                    itemTop = spaceInterval * 3 + everyLength * 2;
-//                    itemBottom = itemTop + everyBottomLength;
-                    scaleRate = (float) everyBottomLength / sideLength;
+                    scaleRate = (float) everyLength / sideLength;
                     scale2 = scaleRate;
+                    itemView.setScaleRate(scaleRate);
+                    break;
+                case DraggableItemView.STATUS_BOTTOM_2:
+                    int vCenter1 = l + spaceInterval * 2 + everyLength / 2 + everyLength;
+                    itemLeft = vCenter1 - halfSideLength;
+                    itemRight = vCenter1 + halfSideLength;
+                    itemTop = bottomCenter1 - halfSideLength;
+                    itemBottom = bottomCenter1 + halfSideLength;
+
+                    scaleRate = (float) everyLength / sideLength;
+                    itemView.setScaleRate(scaleRate);
+                    break;
+                case DraggableItemView.STATUS_BOTTOM_3:
+                    itemLeft = rightCenter - halfSideLength;
+                    itemRight = rightCenter + halfSideLength;
+                    itemTop = bottomCenter1 - halfSideLength;
+                    itemBottom = bottomCenter1 + halfSideLength;
+
+                    scaleRate = (float) everyLength / sideLength;
+                    itemView.setScaleRate(scaleRate);
+                    break;
+
+                case DraggableItemView.STATUS_NEW_BOTTOM_1:
+
+                    int vCenter4 = l + spaceInterval + everyLength / 2;
+                    itemLeft = vCenter4 - halfSideLength;
+                    itemRight = vCenter4 + halfSideLength;
+                    itemTop = bottomCenter - halfSideLength;
+                    itemBottom = bottomCenter + halfSideLength;
+                    scaleRate = (float) everyLength / sideLength;
+                    scale2 = scaleRate;
+                    itemView.setScaleRate(scaleRate);
+                    break;
+                case DraggableItemView.STATUS_NEW_BOTTOM_2:
+                    int vCenter5 = l + spaceInterval * 2 + everyLength / 2 + everyLength;
+                    itemLeft = vCenter5 - halfSideLength;
+                    itemRight = vCenter5 + halfSideLength;
+                    itemTop = bottomCenter - halfSideLength;
+                    itemBottom = bottomCenter + halfSideLength;
+                    scaleRate = (float) everyLength / sideLength;
+                    scale2 = scaleRate;
+                    itemView.setScaleRate(scaleRate);
+                    break;
+                case DraggableItemView.STATUS_NEW_BOTTOM_3:
+                    itemLeft = rightCenter - halfSideLength;
+                    itemRight = rightCenter + halfSideLength;
+                    itemTop = bottomCenter - halfSideLength;
+                    itemBottom = bottomCenter + halfSideLength;
+
+                    scaleRate = (float) everyLength / sideLength;
                     itemView.setScaleRate(scaleRate);
                     break;
             }
@@ -585,9 +568,8 @@ public class DraggableSquareView extends ViewGroup {
         int maxWidth = MeasureSpec.getSize(widthMeasureSpec);
         int width = resolveSizeAndState(maxWidth, widthMeasureSpec, 0);
 
-        int everyLength = (deviceWidth - 4 * spaceInterval) / 3;
-        int everyBottomLength = (deviceWidth - 5 * spaceInterval) / 4;
-        int height = 4 * spaceInterval + everyBottomLength + everyLength * 2;
+        int everyBottomLength = (deviceWidth - 4 * spaceInterval) / 3;
+        int height = 5 * spaceInterval + everyBottomLength * 4;
         setMeasuredDimension(width, height);
     }
 
@@ -647,7 +629,6 @@ public class DraggableSquareView extends ViewGroup {
 
     private int getStatusByDownPoint(int downX, int downY) {
         int everyWidth = getMeasuredWidth() / 3;
-        int everyWidth1 = getMeasuredWidth() / 4;
 //        if (downX < everyWidth) {
 //            if (downY < everyWidth * 2) {
 //                return DraggableItemView.STATUS_LEFT_TOP;
@@ -679,15 +660,21 @@ public class DraggableSquareView extends ViewGroup {
                     return DraggableItemView.STATUS_RIGHT_MIDDLE;
                 }
             }
-        } else {
-            if (downX < everyWidth1) {
-                return DraggableItemView.STATUS_LEFT_BOTTOM;
-            } else if (downX < everyWidth1 * 2) {
-                return DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-            } else if (downX < everyWidth1 * 3) {
-                return DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
+        } else if (downY < everyWidth * 3) {
+            if (downX < everyWidth) {
+                return DraggableItemView.STATUS_BOTTOM_1;
+            } else if (downX < everyWidth * 2) {
+                return DraggableItemView.STATUS_BOTTOM_2;
             } else {
-                return DraggableItemView.STATUS_RIGHT_BOTTOM;
+                return DraggableItemView.STATUS_BOTTOM_3;
+            }
+        } else {
+            if (downX < everyWidth) {
+                return DraggableItemView.STATUS_NEW_BOTTOM_1;
+            } else if (downX < everyWidth * 2) {
+                return DraggableItemView.STATUS_NEW_BOTTOM_2;
+            } else {
+                return DraggableItemView.STATUS_NEW_BOTTOM_3;
             }
         }
     }
