@@ -256,125 +256,238 @@ public class DraggableSquareView extends ViewGroup {
         int centerX = draggingView.getLeft() + sideLength / 2;
         int centerY = draggingView.getTop() + sideLength / 2;
         int everyWidth = getMeasuredWidth() / 3;
-        int everyWidth1 = getMeasuredWidth() / 4;
 
         int fromStatus = -1, toStatus = draggingView.getStatus();
 
         switch (draggingView.getStatus()) {
-//            case DraggableItemView.STATUS_LEFT_TOP:
-//                // 拖动的是左上角的大图
-//                // 依次将小图向上顶
-//                int fromChangeIndex = 0;
-//                if (centerX > everyWidth * 2) {
-//                    // 大图往右越过了位置，一定会跟右侧的三个View交换位置才行
-//                    if (centerY < everyWidth) {
-//                        // 跟右上角的View交换位置
-//                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_TOP;
-//                    } else if (centerY < everyWidth * 2) {
-//                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_MIDDLE;
+            case DraggableItemView.STATUS_LEFT_TOP:
+                // 拖动的是左上角的大图
+                // 依次将小图向上顶
+                int fromChangeIndex = 0;
+                if (centerX > everyWidth * 2) {
+                    // 大图往右越过了位置，一定会跟右侧的三个View交换位置才行
+                    if (centerY < everyWidth) {
+                        // 跟右上角的View交换位置
+                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_TOP;
+                    } else if (centerY < everyWidth * 2) {
+                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                    } else if (centerY < everyWidth * 3) {
+                        fromChangeIndex = DraggableItemView.STATUS_BOTTOM_3;
+                    } else {
+                        fromChangeIndex = DraggableItemView.STATUS_NEW_BOTTOM_3;
+                    }
+                } else if (centerY > everyWidth * 2 && centerY < everyWidth * 3) {
+                    if (centerX < everyWidth) {
+                        fromChangeIndex = DraggableItemView.STATUS_BOTTOM_1;
+                    } else if (centerX < everyWidth * 2) {
+                        fromChangeIndex = DraggableItemView.STATUS_BOTTOM_2;
+                    } else {
+                        fromChangeIndex = DraggableItemView.STATUS_BOTTOM_3;
+                    }
+                }
+//                else if (centerY > everyWidth * 3){
+//                    if (centerX < everyWidth) {
+//                        fromChangeIndex = DraggableItemView.STATUS_NEW_BOTTOM_1;
+//                    } else if (centerX < everyWidth * 2) {
+//                        fromChangeIndex = DraggableItemView.STATUS_NEW_BOTTOM_2;
 //                    } else {
-//                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_BOTTOM;
-//                    }
-//                } else if (centerY > everyWidth * 2) {
-//                    if (centerX < everyWidth1) {
-//                        fromChangeIndex = DraggableItemView.STATUS_LEFT_BOTTOM;
-//                    } else if (centerX < everyWidth1 * 2) {
-//                        fromChangeIndex = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-//                    } else if (centerX < everyWidth1 * 3) {
-//                        fromChangeIndex = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
-//                    } else {
-//                        fromChangeIndex = DraggableItemView.STATUS_RIGHT_BOTTOM;
+//                        fromChangeIndex = DraggableItemView.STATUS_NEW_BOTTOM_3;
 //                    }
 //                }
-//
-//                DraggableItemView toItemView = getItemViewByStatus(fromChangeIndex);
-//                if (!toItemView.isDraggable()) {
-//                    return;
-//                }
-//
-//                for (int i = 1; i <= fromChangeIndex; i++) {
-//                    switchPosition(i, i - 1);
-//                }
-//                draggingView.setStatus(fromChangeIndex);
-//                return;
-//            case DraggableItemView.STATUS_RIGHT_TOP:
-//                if (centerX < everyWidth * 2) {
-//                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-//                } else if (centerY > everyWidth) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-//                }
-//                break;
-//
-//            case DraggableItemView.STATUS_RIGHT_MIDDLE:
+
+                DraggableItemView toItemView = getItemViewByStatus(fromChangeIndex);
+                if (!toItemView.isDraggable()) {
+                    return;
+                }
+
+                for (int i = 1; i <= fromChangeIndex; i++) {
+                    switchPosition(i, i - 1);
+                }
+                draggingView.setStatus(fromChangeIndex);
+                return;
+            case DraggableItemView.STATUS_RIGHT_TOP:
+                if (centerX < everyWidth * 2) {
+                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+                } else if (centerY > everyWidth) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                }
+                break;
+
+            case DraggableItemView.STATUS_RIGHT_MIDDLE:
+                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
+                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+                } else if (centerY < everyWidth) {
+                    fromStatus = DraggableItemView.STATUS_RIGHT_TOP;
+                } else if (centerY > everyWidth * 2) {
+                    fromStatus = DraggableItemView.STATUS_BOTTOM_3;
+                }
+                break;
+            case DraggableItemView.STATUS_BOTTOM_1:
 //                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
 //                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-//                } else if (centerY < everyWidth) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_TOP;
-//                } else if (centerY > everyWidth * 2) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+//                } else if (centerX < everyWidth && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_BOTTOM_2;
+//                } else if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_BOTTOM_3;
+//                } else if (centerX < everyWidth) {
+//                    fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_1;
 //                }
-//                break;
-//            case DraggableItemView.STATUS_RIGHT_BOTTOM:
+                if (centerY < 2 * everyWidth) {
+                    if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+                    } else {
+                        fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                    }
+                } else if (centerY < 3 * everyWidth) {
+                    if (centerX > everyWidth && centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_2;
+                    } else if (centerX > everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_3;
+                    }
+                } else {
+                    if (centerX < everyWidth) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_1;
+                    } else if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_2;
+                    } else {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_3;
+                    }
+                }
+                break;
+            case DraggableItemView.STATUS_BOTTOM_2:
 //                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
 //                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
 //                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
 //                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
 //                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
 //                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-//                } else if (centerX < everyWidth1 * 3) {
-//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
-//                } else if (centerX < everyWidth1 * 2) {
-//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-//                } else if (centerY < everyWidth1) {
-//                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
+//                } else if (centerX < everyWidth && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_BOTTOM_1;
+//                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_BOTTOM_2;
+//                } else if (centerX < everyWidth) {
+//                    fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_1;
+//                } else if (centerX < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_2;
+//                } else if (centerX < everyWidth * 3) {
+//                    fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_3;
 //                }
-//                break;
-//            case DraggableItemView.STATUS_MIDDLE_BOTTOM_2:
+                if (centerY < 2 * everyWidth) {
+                    if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+                    } else {
+                        fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                    }
+                } else if (centerY < 3 * everyWidth) {
+                    if (centerX < everyWidth) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_1;
+                    } else if (centerX > everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_3;
+                    }
+                } else {
+                    if (centerX < everyWidth) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_1;
+                    } else if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_2;
+                    } else {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_3;
+                    }
+                }
+                break;
+            case DraggableItemView.STATUS_BOTTOM_3:
 //                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
 //                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
 //                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
 //                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
 //                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
 //                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-//                } else if (centerX < everyWidth1 * 2) {
-//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-//                } else if (centerX < everyWidth1) {
-//                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
-//                } else if (centerX > everyWidth1 * 3) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
-//                }
-//
-//                break;
-//            case DraggableItemView.STATUS_MIDDLE_BOTTOM_1:
-//                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
-//                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+//                } else if (centerX < everyWidth && centerY < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_BOTTOM_1;
 //                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-//                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-//                } else if (centerX < everyWidth1) {
-//                    fromStatus = DraggableItemView.STATUS_LEFT_BOTTOM;
-//                } else if (centerX > everyWidth1 * 2) {
-//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
-//                } else if (centerX > everyWidth1 * 3) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
+//                    fromStatus = DraggableItemView.STATUS_BOTTOM_2;
+//                } else if (centerX < everyWidth * 2) {
+//                    fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_2;
+//                } else if (centerX < everyWidth * 3) {
+//                    fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_3;
 //                }
-//                break;
-//            case DraggableItemView.STATUS_LEFT_BOTTOM:
-//                if (centerX < everyWidth * 2 && centerY < everyWidth * 2) {
-//                    fromStatus = DraggableItemView.STATUS_LEFT_TOP;
-//                } else if (centerX > everyWidth * 2 && centerY < everyWidth * 2) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-//                } else if (centerX > everyWidth * 2 && centerY < everyWidth) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
-//                } else if (centerX > everyWidth1) {
-//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_1;
-//                } else if (centerX > everyWidth1 * 2) {
-//                    fromStatus = DraggableItemView.STATUS_MIDDLE_BOTTOM_2;
-//                } else if (centerX > everyWidth1 * 3) {
-//                    fromStatus = DraggableItemView.STATUS_RIGHT_BOTTOM;
-//                }
-//                break;
+                if (centerY < 2 * everyWidth) {
+                    if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_LEFT_TOP;
+                    } else {
+                        fromStatus = DraggableItemView.STATUS_RIGHT_MIDDLE;
+                    }
+                } else if (centerY < 3 * everyWidth) {
+                    if (centerX < everyWidth) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_1;
+                    } else if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_2;
+                    }
+                } else {
+                    if (centerX < everyWidth) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_1;
+                    } else if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_2;
+                    } else {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_3;
+                    }
+                }
+                break;
+            case DraggableItemView.STATUS_NEW_BOTTOM_1:
+                if (centerY > everyWidth * 3) {
+                    if (centerX > everyWidth && centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_2;
+                    } else if (centerX > everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_3;
+                    }
+                } else if (centerY > everyWidth * 2) {
+                    if (centerX < everyWidth) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_1;
+                    } else if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_2;
+                    } else if (centerX < everyWidth * 3) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_3;
+                    }
+                }
+                break;
+            case DraggableItemView.STATUS_NEW_BOTTOM_2:
+                if (centerY > everyWidth * 3) {
+                    if (centerX < everyWidth) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_1;
+                    } else if (centerX > everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_3;
+                    }
+                } else if (centerY > everyWidth * 2) {
+                    if (centerX < everyWidth) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_1;
+                    } else if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_2;
+                    } else if (centerX < everyWidth * 3) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_3;
+                    }
+                }
+                break;
+
+            case DraggableItemView.STATUS_NEW_BOTTOM_3:
+                if (centerY > everyWidth * 3) {
+                    if (centerX < everyWidth) {
+                        fromStatus = DraggableItemView.STATUS_NEW_BOTTOM_1;
+                    } else if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_2;
+                    }
+                } else if (centerY > everyWidth * 2) {
+                    if (centerX < everyWidth) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_1;
+                    } else if (centerX < everyWidth * 2) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_2;
+                    } else if (centerX < everyWidth * 3) {
+                        fromStatus = DraggableItemView.STATUS_BOTTOM_3;
+                    }
+                }
+                break;
             default:
                 break;
         }
